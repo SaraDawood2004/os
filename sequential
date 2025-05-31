@@ -1,0 +1,22 @@
+#include <stdio.h>
+int main() {
+    int files[50], i, n, start, len;
+    for(i=0; i<50; i++) files[i]=0;
+
+    printf("Enter starting block and length of file: ");
+    scanf("%d%d", &start, &len);
+
+    for(i=start; i<start+len; i++) {
+        if(files[i]==0)
+            files[i] = 1;
+        else {
+            printf("Block %d already allocated!\n", i);
+            break;
+        }
+    }
+
+    if(i == start+len)
+        printf("File allocated successfully.\n");
+
+    return 0;
+}

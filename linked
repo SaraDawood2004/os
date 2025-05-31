@@ -1,0 +1,19 @@
+#include <stdio.h>
+int main() {
+    int files[50], i, n, start, next;
+    for(i=0; i<50; i++) files[i]=0;
+
+    printf("Enter number of blocks to allocate: ");
+    scanf("%d", &n);
+    printf("Enter blocks: ");
+    for(i=0; i<n; i++) {
+        scanf("%d", &start);
+        if(files[start]==0)
+            files[start]=1;
+        else
+            printf("Block %d already allocated!\n", start);
+    }
+
+    printf("File allocated using linked allocation.\n");
+    return 0;
+}

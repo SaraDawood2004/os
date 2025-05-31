@@ -1,0 +1,91 @@
+fork:
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    pid_t pid = fork();  // create a child process
+
+    if (pid > 0)
+        printf("Parent process, pid = %d\n", getpid());
+    else if (pid == 0)
+        printf("Child process, pid = %d\n", getpid());
+    else
+        printf("Fork failed\n");
+
+    return 0;
+}
+
+wait:
+
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main() {
+    pid_t pid = fork();
+
+    if (pid == 0) {
+        // Child process
+        printf("Child: Running...\n");
+    } else {
+        // Parent process
+        wait(NULL);  // wait for child to finish
+        printf("Parent: Child finished\n");
+    }
+
+    return 0;
+}
+
+exec:
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    printf("Before exec\n");
+
+    execl("/bin/ls", "ls", NULL);  // run ls command
+
+    printf("This won't be printed if exec is successful\n");
+    return 0;
+}
+
+stat:
+#include <stdio.h>
+#include <sys/stat.h>
+
+int main() {
+    struct stat info;
+
+    if (stat("test.txt", &info) == 0) {
+        printf("File size: %ld bytes\n", info.st_size);
+    } else {
+        perror("stat");
+    }
+
+    return 0;
+}
+ipc:
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    int fd[2];
+    pipe(fd);  // create a pipe
+
+    pid_t pid = fork();
+
+    if (pid == 0) {
+        // Child process: read
+        close(fd[1]);  // close write end
+        char msg[20];
+        read(fd[0], msg, sizeof(msg));
+        printf("Child received: %s\n", msg);
+    } else {
+        // Parent process: write
+        close(fd[0]);  // close read end
+        char *msg = "Hello Child!";
+        write(fd[1], msg, sizeof("Hello Child!"));
+    }
+
+    return 0;
+}

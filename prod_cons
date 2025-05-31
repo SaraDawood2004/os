@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 5
+
+int buffer[SIZE];
+int in = 0, out = 0;
+int count = 0;
+
+void produce() {
+    if (count == SIZE) {
+        printf("Buffer is full. Cannot produce.\n");
+        return;
+    }
+
+    int item = rand() % 10 + 1;
+    buffer[in] = item;
+    printf("Produced: %d\n", item);
+    in = (in + 1) % SIZE;
+    count++;
+}
+
+void consume() {
+    if (count == 0) {
+        printf("Buffer is empty. Cannot consume.\n");
+        return;
+    }
+
+    int item = buffer[out];
+    printf("Consumed: %d\n", item);
+    out = (out + 1) % SIZE;
+    count--;
+}
+
+int main() {
+    int choice;
+
+    while (1) {
+        printf("\n1. Produce\n2. Consume\n3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: produce(); break;
+            case 2: consume(); break;
+            case 3: return 0;
+            default: printf("Invalid choice!\n");
+        }
+    }
+}

@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main() {
+    int pid = fork();  // Create child process
+
+    if (pid > 0) {
+        // Parent process
+        printf("Parent is sleeping...\n");
+        sleep(10);  // Give child time to finish and become zombie
+        printf("Parent woke up. Check 'ps' command to see zombie.\n");
+    } else if (pid == 0) {
+        // Child process
+        printf("Child process is ending.\n");
+        exit(0);  // Child finishes early
+    } else {
+        printf("Fork failed!\n");
+    }
+
+    return 0;
+}

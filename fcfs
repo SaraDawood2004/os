@@ -1,0 +1,67 @@
+FCFS
+#include <stdio.h>
+
+struct Process {
+    int id;     // Process ID
+    int at;     // Arrival Time
+    int bt;     // Burst Time
+    int st;     // Start Time
+    int ft;     // Finish Time
+    int wt;     // Waiting Time
+};
+
+int main() {
+    int n;
+    struct Process p[10];
+    int i, j;
+    int totalWT = 0, totalTAT = 0;
+
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    // Input arrival and burst times
+    for (i = 0; i < n; i++) {
+        p[i].id = i + 1;
+        printf("Enter arrival time and burst time for Process %d: ", p[i].id);
+        scanf("%d %d", &p[i].at, &p[i].bt);
+    }
+
+    // Sort processes by arrival time (simple bubble sort)
+    for (i = 0; i < n - 1; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (p[i].at > p[j].at) {
+                struct Process temp = p[i];
+                p[i] = p[j];
+                p[j] = temp;
+            }
+        }
+    }
+
+    // Calculate start time, finish time, waiting time
+    for (i = 0; i < n; i++) {
+        if (i == 0)
+            p[i].st = p[i].at;  // First process starts at arrival time
+        else if (p[i].at > p[i - 1].ft)
+            p[i].st = p[i].at;  // CPU was idle
+        else
+            p[i].st = p[i - 1].ft;  // Starts when previous one finished
+
+        p[i].ft = p[i].st + p[i].bt;
+        p[i].wt = p[i].st - p[i].at;
+
+        totalWT += p[i].wt;
+        totalTAT += p[i].ft - p[i].at;
+    }
+
+    // Display the result
+    printf("\nPID\tAT\tBT\tST\tFT\tWT\tTAT\n");
+    for (i = 0; i < n; i++) {
+        int tat = p[i].ft - p[i].at;  // Turnaround time
+        printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\n", p[i].id, p[i].at, p[i].bt, p[i].st, p[i].ft, p[i].wt, tat);
+    }
+
+    printf("\nAverage Waiting Time: %.2f", (float)totalWT / n);
+    printf("\nAverage Turnaround Time: %.2f\n", (float)totalTAT / n);
+
+    return 0;
+}

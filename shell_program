@@ -1,0 +1,60 @@
+
+fibonacci:
+#!/bin/bash
+
+echo "Enter number of terms:"
+read n
+
+a=0
+b=1
+
+echo "Fibonacci Series:"
+
+for (( i=0; i<n; i++ ))
+do
+    echo -n "$a "
+    fn=$((a + b))
+    a=$b
+    b=$fn
+done
+
+echo
+
+calculator:
+#!/bin/bash
+
+echo "Enter first number:"
+read a
+
+echo "Enter second number:"
+read b
+
+echo "Enter operation (+ - * /):"
+read op
+
+if [ "$op" == "+" ]; then
+    echo "Result = $((a + b))"
+elif [ "$op" == "-" ]; then
+    echo "Result = $((a - b))"
+elif [ "$op" == "*" ]; then
+    echo "Result = $((a * b))"
+elif [ "$op" == "/" ]; then
+    echo "Result = $((a / b))"
+else
+    echo "Invalid operator"
+fi
+
+pattern:
+#!/bin/bash
+
+echo "Enter number of rows:"
+read n
+
+for (( i=1; i<=n; i++ ))
+do
+    for (( j=1; j<=i; j++ ))
+    do
+        echo -n "* "
+    done
+    echo
+done
